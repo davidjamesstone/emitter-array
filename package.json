@@ -8,6 +8,9 @@
     "build": "npm run build-js",
     "build-js": "browserify ./index.js -o ./build.js -d"
   },
+  "dependencies": {
+    "emitter-component": "^1.1.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/davidjamesstone/emitter-array.git"

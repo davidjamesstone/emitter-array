@@ -1,6 +1,6 @@
 var Emitter = require('emitter-component');
 
-window.emitterArray = module.exports = function() {
+module.exports = function() {
 
   /**
    * Construct an Array from the passed arguments
