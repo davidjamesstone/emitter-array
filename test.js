@@ -4,7 +4,7 @@ var emitterArray = require('./index');
 var ea, log;
 
 
-log = function(arguments) { console.log.apply(console, arguments); };
+log = function() { console.log.apply(console, arguments); };
 
 ea = emitterArray('a', 'b', 'c');
 ea.on('change', log);

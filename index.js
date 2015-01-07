@@ -1,5 +1,24 @@
 var Emitter = require('emitter-component');
 
+var createEvent = function(name, target, value) {
+  var e = {
+    name: name,
+    target: target
+  };
+
+  if (value) {
+    e.value = value;
+  }
+
+  return e;
+};
+
+function raiseEvent(name, arr, value) {
+  var e = createEvent(name, arr, value);
+
+  arr.emit(name, e);
+  arr.emit('change', e);
+}
 module.exports = function() {
 
   /**
@@ -22,67 +41,49 @@ module.exports = function() {
    */
   var pop = function() {
 
-    arr.emit('popping');
-    
     var ret = Array.prototype.pop.apply(arr);
 
-    arr.emit('popped', ret);
-    arr.emit('change');
+    raiseEvent('pop', arr, ret);
 
     return ret;
   };
   var push = function() {
 
-    arr.emit('pushing', arguments);
-    
     var ret = Array.prototype.push.apply(arr, arguments);
 
-    arr.emit('popped', ret);
-    arr.emit('change');
+    raiseEvent('push', arr, ret);
 
     return ret;
   };
   var reverse = function() {
 
-    arr.emit('reversing');
-    
     var ret = Array.prototype.reverse.apply(arr);
 
-    arr.emit('reversed', ret);
-    arr.emit('change');
+    raiseEvent('reverse', arr, ret);
 
     return ret;
   };
   var shift = function() {
 
-    arr.emit('shifting');
-    
     var ret = Array.prototype.shift.apply(arr);
 
-    arr.emit('shifted', ret);
-    arr.emit('change');
+    raiseEvent('shift', arr, ret);
 
     return ret;
   };
   var sort = function() {
 
-    arr.emit('sorting');
-    
     var ret = Array.prototype.sort.apply(arr, arguments);
 
-    arr.emit('sorted', ret);
-    arr.emit('change');
+    raiseEvent('sort', arr, ret);
 
     return ret;
   };
   var unshift = function() {
 
-    arr.emit('unshifting');
-    
     var ret = Array.prototype.unshift.apply(arr, arguments);
 
-    arr.emit('unshifted', ret);
-    arr.emit('change');
+    raiseEvent('unshift', arr, ret);
 
     return ret;
   };
@@ -92,12 +93,12 @@ module.exports = function() {
       return;
     }
 
-    var newItems = Array.prototype.slice.call(arguments, 2);
-
     var ret = Array.prototype.splice.apply(arr, arguments);
 
-    arr.emit('spliced', ret);
-    arr.emit('change');
+    raiseEvent('splice', arr, {
+      removed: ret,
+      added: arguments.slice(2)
+    });
 
     return ret;
   };
@@ -116,10 +117,12 @@ module.exports = function() {
    * Special update function
    */
   arr.update = function(index, value) {
-    arr[index] = value;
 
-    arr.emit('updated', index);
-    arr.emit('change');
+    var newValue = arr[index] = value;
+    
+    raiseEvent('update', arr, newValue);
+    
+    return newValue;
   };
 
   return arr;
