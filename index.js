@@ -8,8 +8,10 @@ function raiseEvent(name, arr, value) {
   arr.emit('change', e);
 }
 
-module.exports = function() {
+module.exports = function(callback) {
 
+  callback = callback || raiseEvent;
+  
   /**
    * Construct an Array from the passed arguments
    */
@@ -32,7 +34,7 @@ module.exports = function() {
 
     var ret = Array.prototype.pop.apply(arr);
 
-    raiseEvent('pop', arr, ret);
+    callback('pop', arr, ret);
 
     return ret;
   };
@@ -40,7 +42,7 @@ module.exports = function() {
 
     var ret = Array.prototype.push.apply(arr, arguments);
 
-    raiseEvent('push', arr, ret);
+    callback('push', arr, ret);
 
     return ret;
   };
@@ -48,7 +50,7 @@ module.exports = function() {
 
     var ret = Array.prototype.reverse.apply(arr);
 
-    raiseEvent('reverse', arr, ret);
+    callback('reverse', arr, ret);
 
     return ret;
   };
@@ -56,7 +58,7 @@ module.exports = function() {
 
     var ret = Array.prototype.shift.apply(arr);
 
-    raiseEvent('shift', arr, ret);
+    callback('shift', arr, ret);
 
     return ret;
   };
@@ -64,7 +66,7 @@ module.exports = function() {
 
     var ret = Array.prototype.sort.apply(arr, arguments);
 
-    raiseEvent('sort', arr, ret);
+    callback('sort', arr, ret);
 
     return ret;
   };
@@ -72,7 +74,7 @@ module.exports = function() {
 
     var ret = Array.prototype.unshift.apply(arr, arguments);
 
-    raiseEvent('unshift', arr, ret);
+    callback('unshift', arr, ret);
 
     return ret;
   };
@@ -84,7 +86,7 @@ module.exports = function() {
 
     var ret = Array.prototype.splice.apply(arr, arguments);
 
-    raiseEvent('splice', arr, {
+    callback('splice', arr, {
       removed: ret,
       added: arguments.slice(2)
     });
@@ -107,10 +109,14 @@ module.exports = function() {
    */
   arr.update = function(index, value) {
 
+    var oldValue = arr[index];
     var newValue = arr[index] = value;
-    
-    raiseEvent('update', arr, newValue);
-    
+
+    callback('update', arr, {
+      newValue: newValue,
+      oldValue: oldValue
+    });
+
     return newValue;
   };
 
