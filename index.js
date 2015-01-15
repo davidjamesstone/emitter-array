@@ -16,7 +16,7 @@ module.exports = function(callback) {
    * Construct an Array from the passed arguments
    */
   var arrCtorArgs = arguments;
-  var arr = Array.apply(null, arrCtorArgs);
+  var arr = [];//Array.apply(null, arrCtorArgs);
 
   /**
    * Mixin Emitter to the Array instance
