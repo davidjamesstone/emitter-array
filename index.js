@@ -21,7 +21,7 @@ module.exports = function(callback) {
   /**
    * Mixin Emitter to the Array instance
    */
-  Emitter(arr);
+  if (!callback) Emitter(arr);
 
   /**
    * Proxied array mutators methods
