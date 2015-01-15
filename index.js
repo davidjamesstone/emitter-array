@@ -1,24 +1,13 @@
-var Emitter = require('emitter-component');
-
-var createEvent = function(name, target, value) {
-  var e = {
-    name: name,
-    target: target
-  };
-
-  if (value) {
-    e.value = value;
-  }
-
-  return e;
-};
+var Emitter = require('emitter-object');
+var EmitterEvent = require('emitter-event');
 
 function raiseEvent(name, arr, value) {
-  var e = createEvent(name, arr, value);
+  var e = new EmitterEvent(name, arr, value);
 
   arr.emit(name, e);
   arr.emit('change', e);
 }
+
 module.exports = function() {
 
   /**
