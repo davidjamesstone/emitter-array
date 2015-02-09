@@ -89,7 +89,7 @@ module.exports = function(callback) {
     callback('splice', arr, {
       value: result,
       removed: result,
-      added: arguments.slice(2)
+      added: Array.prototype.slice.call(arguments, 2)
     });
 
     return result;
