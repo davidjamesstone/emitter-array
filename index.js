@@ -1,7 +1,7 @@
 var Emitter = require('emitter-object');
 var EmitterEvent = require('emitter-event');
 
-function result(name, arr, value) {
+function raiseEvent(name, arr, value) {
   var e = new EmitterEvent(name, arr, value);
 
   arr.emit(name, e);
@@ -11,12 +11,12 @@ function result(name, arr, value) {
 module.exports = function(callback) {
 
   callback = callback || raiseEvent;
-  
+
   /**
    * Construct an Array from the passed arguments
    */
   var arrCtorArgs = arguments;
-  var arr = [];//Array.apply(null, arrCtorArgs);
+  var arr = []; //Array.apply(null, arrCtorArgs);
 
   /**
    * Mixin Emitter to the Array instance
@@ -34,7 +34,9 @@ module.exports = function(callback) {
 
     var result = Array.prototype.pop.apply(arr);
 
-    callback('pop', arr, { value: result });
+    callback('pop', arr, {
+      value: result
+    });
 
     return result;
   };
@@ -42,7 +44,9 @@ module.exports = function(callback) {
 
     var result = Array.prototype.push.apply(arr, arguments);
 
-    callback('push', arr, { value: result });
+    callback('push', arr, {
+      value: result
+    });
 
     return result;
   };
@@ -50,7 +54,9 @@ module.exports = function(callback) {
 
     var result = Array.prototype.reverse.apply(arr);
 
-    callback('reverse', arr, { value: result });
+    callback('reverse', arr, {
+      value: result
+    });
 
     return result;
   };
@@ -58,7 +64,9 @@ module.exports = function(callback) {
 
     var result = Array.prototype.shift.apply(arr);
 
-    callback('shift', arr, { value: result });
+    callback('shift', arr, {
+      value: result
+    });
 
     return result;
   };
@@ -66,7 +74,9 @@ module.exports = function(callback) {
 
     var result = Array.prototype.sort.apply(arr, arguments);
 
-    callback('sort', arr, { value: result });
+    callback('sort', arr, {
+      value: result
+    });
 
     return result;
   };
@@ -74,7 +84,9 @@ module.exports = function(callback) {
 
     var result = Array.prototype.unshift.apply(arr, arguments);
 
-    callback('unshift', arr, { value: result });
+    callback('unshift', arr, {
+      value: result
+    });
 
     return result;
   };
@@ -106,7 +118,8 @@ module.exports = function(callback) {
   arr.splice = arr.splice && splice;
 
   /**
-   * Special update function
+   * Special update function since we can't detect
+   * assignment by index e.g. arr[0] = 'something'
    */
   arr.update = function(index, value) {
 
@@ -114,6 +127,7 @@ module.exports = function(callback) {
     var newValue = arr[index] = value;
 
     callback('update', arr, {
+      index: index,
       value: newValue,
       oldValue: oldValue
     });
