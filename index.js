@@ -50,16 +50,6 @@ module.exports = function(callback) {
 
     return result;
   };
-  var reverse = function() {
-
-    var result = Array.prototype.reverse.apply(arr);
-
-    callback('reverse', arr, {
-      value: result
-    });
-
-    return result;
-  };
   var shift = function() {
 
     var result = Array.prototype.shift.apply(arr);
@@ -90,6 +80,16 @@ module.exports = function(callback) {
 
     return result;
   };
+  var reverse = function() {
+
+    var result = Array.prototype.reverse.apply(arr);
+
+    callback('reverse', arr, {
+      value: result
+    });
+
+    return result;
+  };
   var splice = function() {
 
     if (!arguments.length) {
@@ -112,9 +112,10 @@ module.exports = function(callback) {
    */
   arr.pop = arr.pop && pop;
   arr.push = arr.push && push;
-  arr.reverse = arr.reverse && reverse;
   arr.shift = arr.shift && shift;
+  arr.unshift = arr.unshift && unshift;
   arr.sort = arr.sort && sort;
+  arr.reverse = arr.reverse && reverse;
   arr.splice = arr.splice && splice;
 
   /**
